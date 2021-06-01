@@ -1,4 +1,3 @@
-from math import log
 import time
 import threading
 import PySimpleGUI as sg
@@ -104,6 +103,7 @@ def run():
         [
             sg.Text(f'Saved version: {saver.save_name}', key='save_name'),
             sg.Button(button_text='Backup', enable_events=True, key='backup'),
+            sg.Button(button_text='Refresh', enable_events=True, key='refresh'),
             sg.Combo(values=saver.backup_dir.snapshots_list, enable_events=True, key='select_snapshot', default_value=saver.backup_dir.snapshots_list[0]),
             sg.Button(button_text='Remove', enable_events=True, key='remove'),
             sg.Button(button_text='Restore', enable_events=True, key='restore'),
@@ -132,6 +132,8 @@ def run():
             config.max_backup_count = values['max_backup_count']
         elif ev == 'start':
             start(window)            
+        elif ev == 'refresh':
+            refresh(window, values)
         elif ev == 'backup':
             backup(window, values)
         elif ev == 'backuped':
