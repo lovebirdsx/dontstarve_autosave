@@ -1,17 +1,14 @@
+from auto_saver_config import AutoSaverConfig
 from auto_saver_thread import AutoSaverThread
 from save_snapshot import SaveSnapshot
 import traceback
 from auto_saver import AutoSaver
 
-SaveDir = "C:/Program Files (x86)/Steam/userdata/86790013/219740/remote"
-BackupDir = "C:/Users/lovebirdsx/OneDrive/work/game/save/Dont Starve"
-BackupInterval = 60
-MaxBackupCount = 10
-
 def run():
     try:
-        saver = AutoSaver(SaveDir, BackupDir, MaxBackupCount)
-        saver_thread = AutoSaverThread(saver, BackupInterval)
+        config = AutoSaverConfig()
+        saver = AutoSaver(config.save_dir, config.backup_dir, config.max_backup_count)
+        saver_thread = AutoSaverThread(saver, config.backup_interval)
         saver_thread.start()
         while True:
             v = input('[i]nfo [b]ackup [r]estore [d]elete [e]xit: ')

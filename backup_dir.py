@@ -25,7 +25,6 @@ class BackupDir:
         src = ss.dir
         to = os.path.join(self.dir, str(ss.time_stamp_dt))
         print(f'backup to: {to}')
-        time.sleep(5)
         copytree(src, to)
         self.snapshots.append(SaveSnapshot(to))
         self.check_remove()
@@ -36,23 +35,25 @@ class BackupDir:
             ss0 = self.snapshots.pop(0)
             ss0.remove()
 
-    def restore(self, id:int, dir:str):
+    def restore(self, id:int, dir:str) -> bool:
         if id < 0 or id >= len(self.snapshots):
             print(f'no backup for id [{id}]')
-            return
+            return False
         
         ss = self.snapshots[id]
         print(f'restore by: {ss.dir}')
         rmtree(dir)
         copytree(ss.dir, dir)
+        return True
 
-    def remove(self, id:int):
+    def remove(self, id:int) -> bool:
         if id < 0 or id >= len(self.snapshots):
             print(f'no backup for id [{id}]')
-            return
+            return False
         
         ss = self.snapshots.pop(id)
         ss.remove()
+        return True
 
     def output_info(self):
         print(f'base dir is {self.dir}')
@@ -61,6 +62,16 @@ class BackupDir:
         print(f'backup list:')
         for ss in self.snapshots:
             print(f'  {ss.dir}')
+    
+    @property
+    def snapshots_list(self):
+        result = []
+        for ss in self.snapshots:
+            result.append(ss.name)
+        return result
+
+    def get_id(self, name:str):
+        return next((i for i, item in enumerate(self.snapshots) if item.name == name), -1)
 
 if __name__ == '__main__':
     bd = BackupDir('C:/Users/lovebirdsx/OneDrive/work/game/save/Dont Starve', 10)

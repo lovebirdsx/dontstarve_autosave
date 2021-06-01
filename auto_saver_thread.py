@@ -15,7 +15,9 @@ class AutoSaverThread(threading.Thread):
         self.is_running = True
         print(f'auto save thread start at {datetime.datetime.now().strftime("%Y%m%d-%H%M%S")}')
         while self.is_running:
-            self.saver.try_backup()
+            if self.saver.need_backup():
+                time.sleep(3)
+                self.saver.try_backup()
             for _ in range(self.backup_interval):
                 time.sleep(1)
                 if not self.is_running:
