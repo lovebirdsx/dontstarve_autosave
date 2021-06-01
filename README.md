@@ -12,6 +12,8 @@ Change config in auto_saver_console.py
 
 Run `auto_saver_console.py`, key command:
 
-- `l` list all saves
+- `i` show running information
+- `b` backup atonce
 - `r` restore pre-saved by id
-- `s` start backup and you can start the game now
+- `d` delete pre-saved by id
+- `e` exit

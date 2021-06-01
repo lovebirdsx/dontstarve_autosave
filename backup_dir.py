@@ -24,7 +24,7 @@ class BackupDir:
     def add_snapshot(self, ss:SaveSnapshot):
         src = ss.dir
         to = os.path.join(self.dir, str(ss.time_stamp_dt))
-        print(f'backup {src} -> {to}')
+        print(f'backup to: {to}')
         time.sleep(5)
         copytree(src, to)
         self.snapshots.append(SaveSnapshot(to))
@@ -42,9 +42,17 @@ class BackupDir:
             return
         
         ss = self.snapshots[id]
-        print(f'restore {ss.dir} -> {dir}')
+        print(f'restore by: {ss.dir}')
         rmtree(dir)
         copytree(ss.dir, dir)
+
+    def remove(self, id:int):
+        if id < 0 or id >= len(self.snapshots):
+            print(f'no backup for id [{id}]')
+            return
+        
+        ss = self.snapshots.pop(id)
+        ss.remove()
 
     def output_info(self):
         print(f'base dir is {self.dir}')
