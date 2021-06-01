@@ -1,7 +1,11 @@
 # dontstarve_autosave
 
 Auto backup don't starve's save file, and choose witch one to load
-Write in Python 3.9.5
+
+## Require
+
+- Python 3.9.5
+- PySimpleGUI `pip install pysimplegui`
 
 ## Usage
 
