@@ -7,7 +7,10 @@ class SaveSnapshot:
     def __init__(self, dir):
         self.dir = dir
         self.index_file = os.path.join(dir, "saveindex")
-        self.time_stamp = os.stat(self.index_file).st_mtime
+        if os.path.isfile(self.index_file):
+            self.time_stamp = os.stat(self.index_file).st_mtime
+        else:
+            self.time_stamp = 0
         self.time_stamp_dt = filetimes.FILETIME(self.time_stamp)
 
     def remove(self):

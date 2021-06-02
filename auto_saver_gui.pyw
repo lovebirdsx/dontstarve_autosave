@@ -11,9 +11,10 @@ def init():
     config = AutoSaverConfig()
     saver = AutoSaver(config.save_dir, config.backup_dir, config.max_backup_count)
 
-def update_saver():
+def update_saver(window:sg.Window, values):
     global saver
     saver = AutoSaver(config.save_dir, config.backup_dir, config.max_backup_count)
+    refresh(window, values)
 
 def backup_thread(window:sg.Window):
     window['running_status'].update('backuping is running...')
@@ -32,7 +33,6 @@ def start(window:sg.Window):
     window['max_backup_count'].update(disabled=True)
     window['save_dir_browse'].update(disabled=True)
     window['backup_dir_browse'].update(disabled=True)
-    update_saver()
     threading.Thread(target=backup_thread, args=(window,), daemon=True).start()
 
 def refresh(window:sg.Window, values):
@@ -124,12 +124,16 @@ def run():
             break
         elif ev == 'save_dir':
             config.save_dir = values['save_dir']
+            update_saver(window, values)
         elif ev == 'backup_dir':
             config.backup_dir = values['backup_dir']
+            update_saver(window, values)
         elif ev == 'backup_interval':
             config.backup_interval = values['backup_interval']
+            update_saver(window, values)
         elif ev == 'max_backup_count':
             config.max_backup_count = values['max_backup_count']
+            update_saver(window, values)
         elif ev == 'start':
             start(window)            
         elif ev == 'refresh':
